@@ -182,4 +182,18 @@ public class DIshController {
         redisTemplate.opsForValue().set(key,dishDtoList,60, TimeUnit.MINUTES);
         return R.success(dishDtoList);
     }
+
+    @DeleteMapping()
+    public R<String> delete(Long ids){
+        // 清空缓存,注意这里清空的是分类里面的缓存，所以要获取分类id
+        Dish dish = dishService.getById(ids);
+        // 清空数据
+        dishService.deleteWithFlavor(ids);
+        // 删除缓存
+        if(dish!=null) {
+            String key = "dish_"+dish.getCategoryId()+"_"+dish.getStatus();
+            redisTemplate.delete(key);
+        }
+        return R.success("删除成功!");
+    }
 }

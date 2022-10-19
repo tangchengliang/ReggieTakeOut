@@ -78,6 +78,7 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
     }
 
     @Override
+    @Transactional
     public void updateWithFlavor(DishDto dishDto) {
         // 更新dish表
         this.updateById(dishDto);
@@ -98,5 +99,17 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
 
         // 保存口味表
         dishFlavorService.saveBatch(flavors);
+    }
+
+    @Override
+    @Transactional
+    public void deleteWithFlavor(Long ids) {
+        // 删除菜品
+        this.removeById(ids);
+
+        // 删除关联的口味
+        LambdaQueryWrapper<DishFlavor> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(DishFlavor::getDishId, ids);
+        dishFlavorService.remove(queryWrapper);
     }
 }
