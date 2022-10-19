@@ -4,10 +4,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Slf4j
 @SpringBootApplication
 @ServletComponentScan
+@EnableTransactionManagement
 /*
     SpringBootApplication 上使用@ServletComponentScan 注解后
             Servlet可以直接通过@WebServlet注解自动注册
